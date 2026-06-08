@@ -1,0 +1,13 @@
+{
+  "notes": "Replayable test vectors for Checkpoint Envelope V1 (canonical JSON + Ed25519)",
+  "vectors": [
+    {
+      "domain": "bridge.audit",
+      "sequence": 1,
+      "merkle_root_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+      "created_at_unix": 1730000000,
+      "producer_pubkey_b64": "REPLACE_ME",
+      "signature_b64": "REPLACE_ME"
+    }
+  ]
+}

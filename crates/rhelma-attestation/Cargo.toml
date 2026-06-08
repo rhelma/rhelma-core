@@ -1,0 +1,29 @@
+[package]
+name = "rhelma-attestation"
+version = "0.1.1"
+edition = "2021"
+license = "Apache-2.0"
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+
+# Optional heavy deps for hardware-backed attestation. These are not pulled by default.
+tss-esapi = { version = "7", optional = true }
+sgx-isa = { version = "0.4", optional = true }
+
+[features]
+default = []
+
+# Future hardware backends. These are placeholders so downstream crates can
+# feature-gate support without pulling heavy deps by default.
+
+# TPM-backed attestation (TPM2 quote verification/generation).
+tpm = ["dep:tss-esapi"]
+
+# Intel SGX-backed attestation (quote parsing/verification).
+sgx = ["dep:sgx-isa"]
+
+# Convenience feature for enabling any hardware backend.
+hardware-attestation = ["tpm", "sgx"]

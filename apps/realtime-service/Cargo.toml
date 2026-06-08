@@ -1,0 +1,53 @@
+[package]
+name = "realtime-service"
+version = "0.3.0-enterprise-pro"
+edition = "2021"
+publish = false
+description = "Enterprise-grade realtime WebSocket service aligned with Rhelma contract v6.0"
+
+[dependencies]
+axum = { workspace = true, features = ["ws", "macros"] }
+tokio = { workspace = true, features = ["full"] }
+tower = { workspace = true }
+tower-http = { workspace = true, features = ["trace", "cors"] }
+
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+tracing = { workspace = true }
+metrics = { workspace = true }
+metrics-exporter-prometheus = { version = "0.15.3", default-features = false }
+once_cell = "1.18"
+
+anyhow = { workspace = true }
+async-trait = { workspace = true }
+futures-util = "0.3"
+
+# Optional: Redis for distributed presence (future)
+redis = { workspace = true, features = ["tokio-comp", "connection-manager"], optional = true }
+# Rhelma platform crates
+rhelma-core = { path = "../../crates/rhelma-core" }
+rhelma-config = { workspace = true }
+rhelma-event = { path = "../../crates/rhelma-event" }
+rhelma-auth = { path = "../../crates/rhelma-auth" }
+rhelma-metrics = { path = "../../crates/rhelma-metrics" }
+rhelma-tracing = { path = "../../crates/rhelma-tracing" }
+rhelma-http-observability = { path = "../../crates/rhelma-http-observability" }
+rhelma-observability-core = { path = "../../observability/core" }
+
+[features]
+default = []
+redis-backend = ["redis"]
+
+[dev-dependencies]
+tokio-tungstenite = "0.24"
+url = { workspace = true }
+
+
+
+
+
+
+

@@ -1,0 +1,60 @@
+{
+  "format": "bridge_audit_vectors_v1",
+  "merkle_root_hex": "73c6473e93497a00e5c04eed11500dbba460739b8061e0ffae31dd9c14256a2d",
+  "entries": [
+    {
+      "entry": {
+        "v": 1,
+        "ts_unix": 1700000000,
+        "intent_id": "intent_0",
+        "action": "intent_created",
+        "audit_digest_hex": "a5772f173b78cd47078d3e3f16e7d46e43f0ba878d9f734697b7a1fb1700bd09",
+        "chain": "mocknet",
+        "direction": "deposit",
+        "subject_id": "user_0",
+        "meta": {
+          "note": "example",
+          "i": 0
+        }
+      },
+      "canonical_json": "{\"action\":\"intent_created\",\"audit_digest_hex\":\"a5772f173b78cd47078d3e3f16e7d46e43f0ba878d9f734697b7a1fb1700bd09\",\"chain\":\"mocknet\",\"direction\":\"deposit\",\"intent_id\":\"intent_0\",\"meta\":{\"i\":0,\"note\":\"example\"},\"subject_id\":\"user_0\",\"ts_unix\":1700000000,\"v\":1}",
+      "entry_hash_hex": "c82984371499bc2e546eb51dfb95822ebc9d9650bfd38eb129fd748a8efbc888"
+    },
+    {
+      "entry": {
+        "v": 1,
+        "ts_unix": 1700000001,
+        "intent_id": "intent_1",
+        "action": "intent_created",
+        "audit_digest_hex": "a43c9bd24f792152f6ffdb375910e128c823cffed4a3762337fb6920d442f404",
+        "chain": "mocknet",
+        "direction": "deposit",
+        "subject_id": "user_1",
+        "meta": {
+          "note": "example",
+          "i": 1
+        }
+      },
+      "canonical_json": "{\"action\":\"intent_created\",\"audit_digest_hex\":\"a43c9bd24f792152f6ffdb375910e128c823cffed4a3762337fb6920d442f404\",\"chain\":\"mocknet\",\"direction\":\"deposit\",\"intent_id\":\"intent_1\",\"meta\":{\"i\":1,\"note\":\"example\"},\"subject_id\":\"user_1\",\"ts_unix\":1700000001,\"v\":1}",
+      "entry_hash_hex": "f504e1915beeb156a3bf3e898524aadb0c56749396e0600307bb45e51c561fa3"
+    },
+    {
+      "entry": {
+        "v": 1,
+        "ts_unix": 1700000002,
+        "intent_id": "intent_2",
+        "action": "finalized",
+        "audit_digest_hex": "26c2bbb3f3c6dcb4fa57bac179f9c022b5b1e6c45e589fea8b04c963c25591ad",
+        "chain": "mocknet",
+        "direction": "deposit",
+        "subject_id": "user_2",
+        "meta": {
+          "note": "example",
+          "i": 2
+        }
+      },
+      "canonical_json": "{\"action\":\"finalized\",\"audit_digest_hex\":\"26c2bbb3f3c6dcb4fa57bac179f9c022b5b1e6c45e589fea8b04c963c25591ad\",\"chain\":\"mocknet\",\"direction\":\"deposit\",\"intent_id\":\"intent_2\",\"meta\":{\"i\":2,\"note\":\"example\"},\"subject_id\":\"user_2\",\"ts_unix\":1700000002,\"v\":1}",
+      "entry_hash_hex": "4ca91d4b6a81e227947be9b88bb65e9aaac3afa1d0978df1da14d666d0c4fc24"
+    }
+  ]
+}

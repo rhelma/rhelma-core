@@ -1,0 +1,46 @@
+# crates/rhelma-cache/Cargo.toml
+[package]
+name = "rhelma-cache"
+version = "0.2.0-enterprise-pro"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "High-performance caching layer for Rhelma platform"
+publish = false
+
+[dependencies]
+# Core dependencies
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+futures = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+
+# Hashing
+sha2 = { workspace = true }
+hex = { workspace = true }
+
+# Caching
+redis = { workspace = true }
+lru = "0.12.0"
+dashmap = "5.5.0"
+async-trait = { workspace = true }
+
+# Rhelma ecosystem
+rhelma-core = { path = "../rhelma-core" }
+rhelma-tracing = { path = "../rhelma-tracing" }
+
+# Utilities
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+config = { workspace = true }
+secrecy = { workspace = true }
+tracing = { workspace = true }
+metrics = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+testcontainers = "0.18"
+rhelma-cache = { path = "." }
+
+

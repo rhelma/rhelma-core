@@ -1,0 +1,71 @@
+# Service Runbook: ai-companion (Rhelma6)
+
+## What this service does
+
+ai-companion is a Rhelma6 component. For intent, configuration, and API/event contracts, see:
+
+- `apps/ai-companion/README.md`
+- `docs/contract/v6.0/specs/`
+
+## Primary signals
+
+- Health: `GET /healthz` · Readiness: `GET /readyz`
+- Metrics: `GET /metrics` (Prometheus, if enabled)
+- Logs: look for `request_id`, `correlation_id`, and `trace_id` on error paths
+
+## Common alerts
+
+- Availability: readiness failing or the process crash-looping
+- Error spike: elevated failures in logs and/or 5xx for HTTP surfaces
+- Latency: p95/p99 regressions (HTTP)
+- Dependency issues: Kafka/DB/Redis/downstream services unavailable
+
+## Quick triage
+
+```bash
+kubectl get pods -n rhelma6 -l app=ai-companion -o wide
+kubectl logs -n rhelma6 -l app=ai-companion --tail=200
+kubectl get events -n rhelma6 --sort-by=.lastTimestamp | tail -n 40
+```
+
+### Check dependencies (if configured)
+
+- Kafka / event bus
+- PostgreSQL (if used)
+- Redis (if used)
+- Any downstream HTTP services
+
+```bash
+kubectl get pods -n rhelma6 | grep -Ei 'kafka|postgres|redis'
+```
+
+## Fast recovery actions
+
+### Rollout restart
+
+```bash
+kubectl rollout restart deploy/ai-companion -n rhelma6
+kubectl rollout status deploy/ai-companion -n rhelma6 --timeout=180s
+```
+
+### Roll back a bad release
+
+```bash
+kubectl rollout undo deploy/ai-companion -n rhelma6
+kubectl rollout status deploy/ai-companion -n rhelma6 --timeout=180s
+```
+
+### Mitigate overload
+
+- Scale horizontally:
+  ```bash
+  kubectl scale deploy/ai-companion -n rhelma6 --replicas=4
+  ```
+- If the issue is downstream saturation, reduce traffic at the edge or temporarily tighten rate limits (with approval).
+
+## Evidence collection
+
+- Capture a failing `request_id` / `correlation_id`
+- Snapshot the active ConfigMap/Secret used by the deployment
+- Export recent logs around the failure window
+- If relevant, export a short window of metrics (p95/p99 latency, error rate)

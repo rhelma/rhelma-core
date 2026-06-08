@@ -1,0 +1,58 @@
+
+paths:
+  /healthz:
+    get:
+      summary: Health check endpoint
+      responses:
+        '200':
+          description: Healthy
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      responses:
+        '200':
+          description: Metrics data
+
+  # Adding missing governance endpoints
+  /v1/governance/propose:
+    post:
+      summary: Propose a new policy bundle
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                policy_name:
+                  type: string
+                policy_version:
+                  type: string
+      responses:
+        '200':
+          description: Proposal successful
+
+  /v1/governance/sign/{bundle_id}:
+    post:
+      summary: Sign a pending policy bundle
+      parameters:
+        - name: bundle_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Signed policy bundle
+
+  /v1/governance/activate/{bundle_id}:
+    post:
+      summary: Activate a policy bundle after quorum
+      parameters:
+        - name: bundle_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Bundle activated

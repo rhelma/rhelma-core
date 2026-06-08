@@ -1,0 +1,12 @@
+{
+  "summary": "Tighten rate limits for admin endpoints",
+  "class": "high_impact",
+  "policy": {
+    "rate_limit": {
+      "admin_rpm": 120,
+      "window_secs": 60
+    }
+  },
+  "activate_not_before": "2026-01-06T13:00:00Z",
+  "rollback_plan": "Revert to previous bundle if error budget burn exceeds threshold"
+}

@@ -1,0 +1,7 @@
+# Apps under apps/* that are NOT long-running services.
+# These do not have /healthz or /metrics expectations.
+
+admin-web
+rhelma-attestation-verifier
+rhelma-governance-signer
+rhelma-node

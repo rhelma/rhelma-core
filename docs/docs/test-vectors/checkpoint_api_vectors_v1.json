@@ -1,0 +1,4 @@
+{
+  "canonical_payload_example": "domain=bridge-audit\nkind=merkle-root\nroot=0123... (64 hex)\nts=1730000000\n",
+  "notes": "Use ed25519 to sign canonical payload bytes. signer_peer_id must equal sha256(pubkey) lower-hex."
+}

@@ -1,0 +1,6 @@
+{
+  "subject_id": "did:rhelma:node:example123",
+  "amount": 100,
+  "reason": "reward:contribution",
+  "reference": "pr#1234"
+}

@@ -1,0 +1,18 @@
+{
+  "realm_id": "realm_first",
+  "name": "First Realm",
+  "description": "A minimal communication realm: signed events, time-bounded moderation, human+AI collaboration.",
+  "charter": [
+    "No direct threats or incitement.",
+    "No doxxing.",
+    "No spam.",
+    "Moderation actions are time-bounded and appealable.",
+    "You can export your data and fork."
+  ],
+  "bootstrap": [],
+  "channels": [
+    {"channel_id": "general", "name": "#general", "visibility": "public", "tags": []},
+    {"channel_id": "ann", "name": "#announcements", "visibility": "public", "tags": []},
+    {"channel_id": "help", "name": "#help", "visibility": "public", "tags": []}
+  ]
+}

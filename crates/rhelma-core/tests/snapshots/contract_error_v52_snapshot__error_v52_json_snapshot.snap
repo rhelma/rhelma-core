@@ -1,0 +1,22 @@
+---
+source: crates/rhelma-core/tests/contract_error_v52_snapshot.rs
+expression: env
+---
+{
+  "error": {
+    "error_code": "RATE_LIMITED",
+    "http_status": 429,
+    "message": "Too many requests",
+    "retryable": true,
+    "severity": "MEDIUM",
+    "retry_after_ms": 10000,
+    "request_id": "018d3c9f-2f4a-7d26-9d6f-5e6f8f4e1d10",
+    "correlation_id": "018d3c9f-2f4a-7d26-9d6f-5e6f8f4e1d10",
+    "traceparent": "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01",
+    "context": {
+      "limit": 100,
+      "window_seconds": 60
+    },
+    "timestamp": "2025-01-01T00:00:00.000Z"
+  }
+}

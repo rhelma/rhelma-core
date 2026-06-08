@@ -1,0 +1,18 @@
+Rhelma-CORE CHANGELOG
+
+[1.1.2] - 2025-12-01
+--------------------
+### Added
+- ConnectionMetadata::inactivity_duration() for observability and analytics.
+- Display implementation for PresenceStatus.
+
+### Notes
+Non-breaking, safe enhancements improving developer experience and diagnostics.
+
+
+
+
+
+
+
+

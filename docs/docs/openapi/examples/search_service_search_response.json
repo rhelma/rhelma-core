@@ -1,0 +1,19 @@
+{
+  "total": 2,
+  "hits": [
+    {
+      "id": "doc_123",
+      "score": 0.92,
+      "title": "Vector databases in Rhelma",
+      "snippet": "How Rhelma uses hybrid search...",
+      "meta": {"source": "docs"}
+    },
+    {
+      "id": "doc_456",
+      "score": 0.88,
+      "title": "Hybrid search engine",
+      "snippet": "Lexical + semantic retrieval...",
+      "meta": {"source": "kb"}
+    }
+  ]
+}

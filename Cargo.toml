@@ -1,0 +1,144 @@
+[workspace]
+members = [
+    # Public Foundation Crates
+    "crates/rhelma-ai-attestation",
+    "crates/rhelma-ai-contracts",
+    "crates/rhelma-attestation",
+    "crates/rhelma-auth",
+    "crates/rhelma-cache",
+    "crates/rhelma-config",
+    "crates/rhelma-core",
+    "crates/rhelma-db",
+    "crates/rhelma-event",
+    "crates/rhelma-event-kafka",
+    "crates/rhelma-http-observability",
+    "crates/rhelma-logger",
+    "crates/rhelma-metrics",
+    "crates/rhelma-realm-telemetry",
+    "crates/rhelma-sandbox-runner",
+    "crates/rhelma-tracing",
+    # Public Reference Services
+    "apps/api-gateway",
+    "apps/file-storage",
+    "apps/node-registry",
+    "apps/realtime-service",
+    "apps/rhelma-attestation-verifier",
+    "apps/sandbox-runner",
+    "apps/search-service",
+    "apps/social-service",
+    # Observability
+    "observability/agent",
+    "observability/core",
+]
+
+default-members = [
+    "apps/api-gateway",
+    "apps/social-service",
+    "apps/search-service",
+    "apps/realtime-service",
+    "apps/file-storage",
+    "apps/node-registry",
+    "apps/rhelma-attestation-verifier",
+    "crates/rhelma-attestation",
+]
+
+resolver = "2"
+[workspace.lints.rust]
+missing_docs = "deny"
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = "deny"
+pedantic = "deny"
+nursery = "deny"
+
+[workspace.dependencies]
+rhelma-config = { path = "crates/rhelma-config" }
+rhelma-core = { path = "crates/rhelma-core" }
+rhelma-auth = { path = "crates/rhelma-auth" }
+rhelma-db = { path = "crates/rhelma-db" }
+rhelma-cache = { path = "crates/rhelma-cache" }
+rhelma-tracing = { path = "crates/rhelma-tracing" }
+rhelma-logger = { path = "crates/rhelma-logger" }
+rhelma-metrics = { path = "crates/rhelma-metrics" }
+rhelma-event = { path = "crates/rhelma-event" }
+rhelma-event-kafka = { path = "crates/rhelma-event-kafka" }
+rhelma-event-kafka-agent = { path = "crates/rhelma-event-kafka-agent" }
+rhelma-ai-contracts = { path = "crates/rhelma-ai-contracts" }
+rhelma-ai-attestation = { path = "crates/rhelma-ai-attestation" }
+rhelma-attestation = { path = "crates/rhelma-attestation" }
+rhelma-sandbox-runner = { path = "crates/rhelma-sandbox-runner" }
+rhelma-http-observability = { path = "crates/rhelma-http-observability" }
+rhelma-realm-telemetry = { path = "crates/rhelma-realm-telemetry" }
+
+# Web Framework
+axum = { version = "0.8.0", features = ["ws", "macros"] }
+axum-prometheus = "0.10"
+metrics-exporter-prometheus = "0.18"
+tower = { version = "0.4", features = ["util"] }
+tower-http = { version = "0.5", features = ["util", "trace", "compression-br"] }
+hyper = "1.2.0"
+# Observability / OTLP compatibility
+opentelemetry = { version = "0.21" }
+opentelemetry_sdk = { version = "0.21", features = ["rt-tokio"] }
+opentelemetry-otlp = "0.14"
+# NOTE: opentelemetry-otlp (and its older tonic/axum stack) is intentionally
+# not part of the workspace default dependency set. If you need OTLP export,
+# enable the `otel` feature on `rhelma-tracing` and add an OTLP exporter crate
+# explicitly in the consuming binary.
+tracing-opentelemetry = { version = "0.22" }
+metrics = { version = "0.24" }
+# URLs (used in rhelma-tracing v2 config)
+url = "2.5"
+async-stream = "0.3"
+http = "1"
+
+
+# Async & Runtime
+tokio = { version = "1.0", features = ["full"] }
+futures = "0.3"
+async-trait = "0.1"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Crypto / hashing (for AI attestation)
+base64 = "0.22"
+sha2 = "0.10"
+hex = "0.4"
+hmac = "0.12"
+subtle = "2.5"
+ipnet = "2.11"
+
+# Database & Cache
+sqlx = { version = "0.8", default-features = false, features = ["postgres", "runtime-tokio-rustls", "uuid", "chrono", "macros", "migrate"] }
+redis = { version = "1.0.1", features = ["tokio-comp", "connection-manager"] }
+async-nats = "0.35"
+
+# Config & Secrets
+config = "0.15"
+secrecy = { version = "0.8", features = ["serde"] }
+
+# HTTP Client
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+# Error handling
+anyhow = "1.0"
+thiserror = "1.0"
+
+# Tracing
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json", "registry", "time"] }
+
+# Common types
+chrono = { version = "0.4", features = ["serde", "clock"] }
+uuid = { version = "1.0", features = ["serde", "v4", "v7"] }
+
+# Validation
+validator = { version = "0.16", features = ["derive"] }
+
+
+[workspace.package]
+version = "0.1.1"
+edition = "2021"
+license = "MIT OR Apache-2.0"

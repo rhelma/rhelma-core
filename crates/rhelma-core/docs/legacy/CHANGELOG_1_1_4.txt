@@ -1,0 +1,22 @@
+Rhelma-CORE CHANGELOG
+
+[1.1.4] - 2025-12-01
+--------------------
+### Added
+- Validation-aware TenantId and RegionId types with safe constructors and custom deserialization.
+- Email now validates on deserialization while serializing as a transparent string value.
+- Additional tests for realtime inactivity_duration and identifier/value validation.
+
+### Changed
+- Global AppConfig initialization now reports the RHELMA_ENV and underlying error when configuration loading fails.
+
+### Notes
+Incremental, backwards-compatible hardening of the type system and configuration behavior for rhelma-core.
+
+
+
+
+
+
+
+

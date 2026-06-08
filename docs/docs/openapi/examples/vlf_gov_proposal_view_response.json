@@ -1,0 +1,14 @@
+{
+  "id": "prop_abc",
+  "kind": "rotate_signers",
+  "payload": {
+    "new_signers": [
+      "deadbeef",
+      "cafebabe"
+    ],
+    "quorum": 2
+  },
+  "required_quorum": 2,
+  "valid_signatures": 1,
+  "committed": false
+}

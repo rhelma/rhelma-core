@@ -1,0 +1,20 @@
+{
+  "observed_region": "eu-west-1",
+  "generated_at": "2026-01-06T12:00:02Z",
+  "regions": [
+    {
+      "region_id": "eu-west-1",
+      "is_healthy": true,
+      "healthy_endpoints": 2,
+      "latency_ms": 42,
+      "checked_at": "2026-01-06T12:00:01Z"
+    },
+    {
+      "region_id": "us-east-1",
+      "is_healthy": false,
+      "healthy_endpoints": 0,
+      "latency_ms": 2000,
+      "checked_at": "2026-01-06T12:00:01Z"
+    }
+  ]
+}

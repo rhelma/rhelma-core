@@ -1,0 +1,50 @@
+[package]
+name = "rhelma-tracing"
+version = "1.4.0-enterprise-pro"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Rhelma v6.0-compliant distributed tracing layer (RequestContext-ready)."
+
+[features]
+# NOTE: OTEL export is optional. Keeping it off by default avoids pulling
+# in older tonic/axum stacks which can cause duplicate `axum` versions.
+default = []
+otel = [
+    "dep:opentelemetry",
+    "dep:opentelemetry_sdk",
+    "dep:tracing-opentelemetry",
+    "dep:opentelemetry-otlp",
+]
+# Enable OpenTelemetry propagation helpers for Kafka (rdkafka headers).
+kafka = [
+    "otel",
+    "dep:rdkafka",
+]
+
+[dependencies]
+# ---- Pull from workspace ----
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+serde = { workspace = true }
+url = { workspace = true }
+tokio = { workspace = true }
+thiserror = { workspace = true }
+rhelma-config = { path = "../rhelma-config" }
+rhelma-core   = { path = "../rhelma-core" }
+
+# ---- Optional OTEL exporter ----
+opentelemetry = { workspace = true, optional = true }
+opentelemetry_sdk = { workspace = true, optional = true }
+tracing-opentelemetry = { workspace = true, optional = true }
+opentelemetry-otlp = { workspace = true, optional = true }
+
+# Kafka propagation helpers (optional; only used when feature "kafka" is enabled).
+rdkafka = { version = "0.36", features = ["cmake-build"], optional = true }
+
+# ---- Local helpers ----
+rand = "0.8"
+uuid = { workspace = true }
+
+[dev-dependencies]
+# Used by examples (compiled as part of `cargo test`).
+http = { workspace = true }

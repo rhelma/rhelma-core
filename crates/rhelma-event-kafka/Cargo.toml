@@ -1,0 +1,42 @@
+[package]
+name = "rhelma-event-kafka"
+version = "0.2.0"
+edition = "2021"
+
+[dependencies]
+rhelma-event = { path = "../rhelma-event" }
+rhelma-tracing = { path = "../rhelma-tracing" }
+
+# Optional: OTEL context extraction for Kafka consumers.
+opentelemetry = { workspace = true, optional = true }
+tracing-opentelemetry = { workspace = true, optional = true }
+
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+chrono = { workspace = true, features = ["serde"] }
+thiserror = { workspace = true }
+
+tracing = { workspace = true }
+async-trait = { workspace = true }
+anyhow = { workspace = true }
+tokio = { workspace = true, features = ["full"] }
+tokio-util = "0.7"
+rdkafka = { version = "0.36", features = ["tokio", "cmake-build"] }
+
+rand = "0.8"
+base64 = { workspace = true }
+futures = { workspace = true }
+metrics = { workspace = true }
+
+
+[features]
+integration-tests = []
+
+# Extract W3C trace context into an OpenTelemetry parent context and attach it
+# to per-message spans (requires services that install tracing-opentelemetry).
+otel = ["dep:opentelemetry", "dep:tracing-opentelemetry"]
+ 
+[dev-dependencies]
+uuid = { workspace = true, features = ["v4"] }
+tracing-subscriber = { workspace = true }
+opentelemetry_sdk = { workspace = true }

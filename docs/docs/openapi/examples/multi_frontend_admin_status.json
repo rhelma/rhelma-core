@@ -1,0 +1,18 @@
+{
+  "node_registry": {
+    "ok": true,
+    "base_url": "http://node-registry:8080",
+    "details": {
+      "status": 200,
+      "latency_ms": 42
+    }
+  },
+  "realm_hub": {
+    "ok": false,
+    "base_url": "http://realm-hub:8080",
+    "details": {
+      "status": 503,
+      "error": "upstream unavailable"
+    }
+  }
+}

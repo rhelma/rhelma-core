@@ -1,0 +1,23 @@
+{
+  "services": [
+    {
+      "name": "node-registry",
+      "ok": true,
+      "base_url": "http://node-registry:8080",
+      "line_count": 12,
+      "byte_count": 865,
+      "sample": [
+        "# HELP rhelma_requests_total Total requests",
+        "# TYPE rhelma_requests_total counter",
+        "rhelma_requests_total{service=\"node-registry\"} 123"
+      ],
+      "hints": {
+        "scrape_duration_ms": 18
+      }
+    }
+  ],
+  "cache": {
+    "ttl_ms": 30000,
+    "age_ms": 1200
+  }
+}

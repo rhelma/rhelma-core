@@ -1,0 +1,53 @@
+---
+source: crates/rhelma-event/tests/contract_event_v52_snapshot.rs
+expression: env
+---
+{
+  "meta": {
+    "event_id": "018d3ca0-6b3e-7cdd-9c3c-2f4d2c4f9c22",
+    "topic": "obs.heartbeat",
+    "schema_ref": "obs.heartbeat@v2",
+    "payload_type": "rhelma.obs.HeartbeatV2",
+    "published_at": "2025-12-17T12:00:00Z",
+    "source": {
+      "service": "api-gateway",
+      "version": "5.2.0",
+      "region": "eu-central-1"
+    },
+    "request": {
+      "request_id": "018d3c9f-2f4a-7d26-9d6f-5e6f8f4e1d10",
+      "correlation_id": "018d3c9f-2f4a-7d26-9d6f-5e6f8f4e1d10",
+      "tenant_id": "tenant_123",
+      "user_id": "user_456",
+      "residency": "GLOBAL",
+      "traceparent": "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01"
+    },
+    "policy": {
+      "purpose": "tests",
+      "data_tier": "public_commons",
+      "consent": true
+    },
+    "trace": {
+      "trace_id": "4bf92f3577b34da6a3ce929d0e0e4736",
+      "span_id": "00f067aa0ba902b7"
+    },
+    "hash": {
+      "alg": "sha256",
+      "value": "0f4d9e19d9f1b6e4d399dbdf8a4d4c1e3c8e9f0f0d4c2e1a9b8c7d6e5f4a3b2c"
+    },
+    "signature": {
+      "alg": "ed25519",
+      "key_id": "k1",
+      "value": "BASE64_SIGNATURE=="
+    },
+    "encryption": {
+      "alg": "age",
+      "key_id": "age1example"
+    }
+  },
+  "payload": {
+    "service": "api-gateway",
+    "ok": true,
+    "uptime_seconds": 1234
+  }
+}

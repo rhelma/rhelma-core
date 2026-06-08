@@ -1,0 +1,59 @@
+## 5.2.1 - 2025-12-18
+- Added optional `dashmap-cache` feature to switch `CachedProvider` to `DashMap`.
+- `load_with_prefix` and `load_with_prefix_strict` no longer silently default on deserialization errors; defaulting only occurs when the prefixed config is empty.
+
+## 5.2.0 - 2025-12-18
+- Added v5.2 convenience loaders (strict-required + auto service_name from env)
+- Added CentralEnv::from_env_model_v1_strict() (requires RHELMA_ENV_MODEL_v1)
+- Added CentralRuntime (central + service_name) helper
+- Fixed prelude exports for strict loader helpers
+- Bumped crate version to 5.2.0
+- Added `set_deprecation_handler` to route deprecation warnings (default: stderr).
+- Added TTL-based caching option via `CachedProvider::new_with_ttl(...)` and cache invalidation helpers.
+- Added optional `dashmap-cache` feature to use `DashMap` for higher concurrency caching.
+- `load_with_prefix*` now defaults only on truly-empty prefixed configs; deserialization errors no longer silently fall back to defaults.
+- Made env-mutating tests deterministic by serializing env access.
+
+## 5.1.1 - 2025-12-16
+- Added CentralEnv::from_env_strict() and CentralEnvTyped (Strong-ID parsing via rhelma-core)
+- Added warn-once for deprecated RHELMA_OBSERVABILITY__* (canonical: RHELMA_OBS__*)
+- Added strict loader helpers (load_with_prefix_strict)
+- Added ConfigBuilder convenience helpers
+- Improved env override loader allocation
+
+## 5.1.0 - 2025-12-06
+- Updated to match Rhelma Core v5.1.0
+- Removed environment overrides from MemoryConfig
+- Removed 'prod' alias for environment mapping
+- Improved strict validation consistency
+- Documentation rewritten for v5.1 contract alignment
+
+3.4.0-enterprise
+----------------
+- Introduced dual provider model: SyncConfigProvider and AsyncConfigProvider.
+- Implemented ConfigResolver::resolve_async and resolve_sync.
+- Implemented ConfigBuilder for fluent composition of overrides.
+- Improved strict validation:
+    * service_name pattern
+    * region pattern
+    * OTEL endpoint URL validation
+    * prometheus port range
+    * tenant_id format
+- Reworked env loader and merge helpers.
+- Implemented load_with_prefix() with real prefix usage via config crate.
+- Added MemoryConfig::with_defaults_dev() and with_defaults_prod().
+- Added CachedProvider<P> decorator for async providers.
+- Added validation examples as tests (invalid tenant_id, invalid region).
+
+
+
+
+
+
+
+
+
+
+
+
+

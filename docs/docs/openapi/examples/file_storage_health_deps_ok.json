@@ -1,0 +1,5 @@
+{
+  "status": "ok",
+  "db": {"ok": true, "detail": null},
+  "storage": {"ok": true, "detail": null}
+}

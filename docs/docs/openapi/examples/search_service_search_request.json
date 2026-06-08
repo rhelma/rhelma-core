@@ -1,0 +1,8 @@
+{
+  "query": "vector database",
+  "limit": 5,
+  "filters": {
+    "kind": "doc",
+    "language": "en"
+  }
+}

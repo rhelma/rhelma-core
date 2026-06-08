@@ -1,0 +1,200 @@
+openapi: 3.0.3
+info:
+  title: file-storage
+  version: 6.0.0
+  description: Rhelma File Storage (upload/download/metadata).
+servers:
+  - url: http://localhost:8211
+tags:
+  - name: public
+  - name: admin
+paths:
+  /metrics:
+    get:
+      tags: [admin]
+      summary: Prometheus scrape endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema: { type: string }
+
+  /health:
+    get:
+      tags: [admin]
+      summary: Liveness probe
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/HealthResponse' }
+
+  /health/deps:
+    get:
+      tags: [admin]
+      summary: Dependency/readiness probe
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/HealthDepsResponse' }
+              examples:
+                ok:
+                  value: { $ref: './examples/file_storage_health_deps_ok.json' }
+        '503':
+          description: Degraded
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/HealthDepsResponse' }
+
+  /files:
+    post:
+      tags: [public]
+      summary: Upload a file (multipart)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/UploadResponse' }
+              examples:
+                created:
+                  value: { $ref: './examples/file_storage_upload_response.json' }
+        '400': { description: Bad Request }
+        '413': { description: Payload Too Large }
+
+  /files/{id}:
+    get:
+      tags: [public]
+      summary: Download file bytes
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '404': { description: Not Found }
+
+  /files/{id}/metadata:
+    get:
+      tags: [public]
+      summary: Get file metadata
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FileRecord' }
+              examples:
+                ok:
+                  value: { $ref: './examples/file_storage_metadata_response.json' }
+        '404': { description: Not Found }
+
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string }
+
+    DepStatus:
+      type: object
+      required: [ok]
+      properties:
+        ok: { type: boolean }
+        detail:
+          oneOf:
+            - { type: string }
+            - { type: 'null' }
+
+    HealthDepsResponse:
+      type: object
+      required: [status, db, storage]
+      properties:
+        status: { type: string }
+        db: { $ref: '#/components/schemas/DepStatus' }
+        storage: { $ref: '#/components/schemas/DepStatus' }
+
+    UploadResponse:
+      type: object
+      required: [file_id, download_url, size_bytes, content_type, checksum]
+      properties:
+        file_id: { type: string }
+        download_url: { type: string }
+        size_bytes: { type: integer, format: int64 }
+        content_type: { type: string }
+        checksum: { type: string }
+
+    FileStatus:
+      type: string
+      enum: [Active, Deleted, Archived]
+
+    StorageBackendKind:
+      type: string
+      enum: [LocalFs, S3]
+
+    FileRecord:
+      type: object
+      required:
+        - id
+        - tenant_id
+        - region
+        - original_name
+        - content_type
+        - size_bytes
+        - checksum
+        - storage_backend
+        - storage_path
+        - status
+        - created_at
+      properties:
+        id:
+          type: object
+          required: [0]
+          properties:
+            '0': { type: string, format: uuid }
+        tenant_id: { type: string }
+        region: { type: string }
+        original_name: { type: string }
+        content_type: { type: string }
+        size_bytes: { type: integer, format: int64 }
+        checksum: { type: string }
+        storage_backend: { $ref: '#/components/schemas/StorageBackendKind' }
+        storage_path: { type: string }
+        status: { $ref: '#/components/schemas/FileStatus' }
+        created_at: { type: string, format: date-time }
+        created_by:
+          oneOf:
+            - { type: string }
+            - { type: 'null' }
+        deleted_at:
+          oneOf:
+            - { type: string, format: date-time }
+            - { type: 'null' }

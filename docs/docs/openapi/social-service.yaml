@@ -1,0 +1,123 @@
+openapi: 3.0.3
+info:
+  title: social-service
+  version: 0.1.0
+  description: |
+    OpenAPI scaffold for social-service.
+
+    Tenant-aware social primitives:
+    - posts
+    - comments
+    - reactions
+    - feed
+servers:
+  - url: http://localhost
+x-rhelma-service: social-service
+paths:
+  /health:
+    get:
+      summary: Health check
+      x-rhelma-internal: true
+      responses:
+        '200':
+          description: OK
+  /metrics:
+    get:
+      summary: Prometheus metrics
+      x-rhelma-internal: true
+      responses:
+        '200':
+          description: OK
+  /feed/latest:
+    get:
+      summary: Latest feed
+      description: |
+        Returns published posts for the tenant (realm). Tenant is taken from `RequestContext` (usually `x-tenant-id`).
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 500
+        - in: query
+          name: cursor
+          schema:
+            type: string
+          description: RFC3339 timestamp cursor
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad request
+  /posts:
+    post:
+      summary: Create post
+      description: Requires `Authorization: Bearer <access-token>`.
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+  /posts/{id}:
+    get:
+      summary: Get post by id
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not found
+  /posts/{id}/comments:
+    get:
+      summary: List comments
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Create comment
+      description: Requires `Authorization: Bearer <access-token>`.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+  /posts/{id}/reactions/{kind}:
+    post:
+      summary: Set reaction
+      description: Requires `Authorization: Bearer <access-token>`.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: kind
+          required: true
+          schema:
+            type: string
+          description: Reaction kind (e.g. like, bookmark)
+      responses:
+        '200':
+          description: OK
+        '401':
+          description: Unauthorized
+components: {}

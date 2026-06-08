@@ -1,0 +1,30 @@
+openapi: 3.0.3
+info:
+  title: node-registry
+  version: 0.1.0
+  description: |
+    OpenAPI scaffold for node-registry.
+
+    NOTE: This file is part of the "Design & Rules completion" phase.
+    Verify paths and schemas against the real router before production use.
+servers:
+  - url: http://localhost
+x-rhelma-service: node-registry
+paths:
+  /healthz:
+    get:
+      summary: Health check
+      x-rhelma-internal: true
+      responses:
+        '200':
+          description: OK
+  /metrics:
+    get:
+      summary: Prometheus metrics (if enabled)
+      description: |
+        Many services expose /metrics; if this service does not, remove this path.
+      x-rhelma-internal: true
+      responses:
+        '200':
+          description: OK
+components: {}

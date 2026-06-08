@@ -1,0 +1,18 @@
+{
+  "receipt": {
+    "receipt_id": "r_01",
+    "subject_id": "did:rhelma:node:example123",
+    "amount": 100,
+    "issued_at_unix": 1704630000,
+    "purpose": "reward:contribution",
+    "tx_refs": [
+      "tx_01"
+    ],
+    "signatures": [
+      {
+        "signer_pubkey_hex": "aabbccddeeff",
+        "sig_b64": "MEUCIQDh...snip...=="
+      }
+    ]
+  }
+}

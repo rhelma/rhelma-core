@@ -1,0 +1,12 @@
+{
+  "residency": "Global",
+  "requested_region": "eu-west-1",
+  "selected_region": "eu-west-1",
+  "endpoints": [
+    "https://eu-west-1.example.internal",
+    "https://eu-west-1b.example.internal"
+  ],
+  "priority": 5,
+  "is_healthy": true,
+  "latency_ms": 42
+}

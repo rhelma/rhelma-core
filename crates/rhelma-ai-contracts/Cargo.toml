@@ -1,0 +1,17 @@
+[package]
+name = "rhelma-ai-contracts"
+version = "0.1.1"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+chrono = { workspace = true }
+uuid = { workspace = true }
+validator = { workspace = true }
+rhelma-ai-attestation = { path = "../rhelma-ai-attestation" }
+
+[features]
+# Enables stricter documentation lints (opt-in).
+strict-docs = []

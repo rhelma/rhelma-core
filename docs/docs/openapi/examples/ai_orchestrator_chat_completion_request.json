@@ -1,0 +1,10 @@
+{
+  "session_id": null,
+  "model": "mni-small",
+  "messages": [
+    {"role": "user", "content": "سلام! یه خلاصه کوتاه از وضعیت سیستم بده."}
+  ],
+  "max_tokens": 256,
+  "temperature": 0.2,
+  "top_p": 0.95
+}

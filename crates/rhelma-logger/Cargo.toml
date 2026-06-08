@@ -1,0 +1,83 @@
+[package]
+autoexamples = false
+name = "rhelma-logger"
+version = "0.17.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Enterprise-grade structured logger for the Rhelma platform (v5.1-aligned)."
+readme = "README.md"
+
+# -----------------------------------------
+# Features
+# -----------------------------------------
+[features]
+# logger همیشه config می‌خواند، اما با unified config اختیاری
+default = ["with-config"]
+
+# برای فعال‌کردن integraton از ماشین observability (اختیاری)
+with-config = ["rhelma-config"]
+
+# HTTP-based dispatchers (FileServiceDispatcher)
+io = ["reqwest", "rhelma-http-observability"]
+
+# tracing support (Deprecated for core v5.1, اما تا زمانی که rhelma-tracing کامل شود نگه داریم)
+with-tracing = ["tracing", "tracing-subscriber"]
+
+redis-dispatcher = ["redis"]
+nats-dispatcher = ["async-nats"]
+
+# -----------------------------------------
+# Dependencies
+# -----------------------------------------
+[dependencies]
+thiserror = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+secrecy = { workspace = true }
+sha2 = { workspace = true }
+
+once_cell = "1.19"
+rand = "0.8"
+
+async-nats = { workspace = true, optional = true }
+redis = { workspace = true, optional = true }
+tokio = { workspace = true, features = ["rt-multi-thread"] }  # این باید همیشه باشد
+
+# OffsetDateTime for timestamps (required for LogEvent)
+time = { version = "0.3", features = ["serde", "formatting", "parsing"] }
+
+# Correct async/sync channels for async mode
+crossbeam-channel = "0.5"
+
+# Optional tracing (only if someone enables `with-tracing`)
+tracing = { workspace = true, optional = true }
+tracing-subscriber = { workspace = true, optional = true }
+
+# Integration with unified observability config
+rhelma-config = { path = "../rhelma-config", optional = true }
+
+# Core dependency (RequestContext / RhelmaError)
+rhelma-core = { path = "../rhelma-core" }
+
+# Optional HTTP client used by FileServiceDispatcher
+reqwest = { workspace = true, features = ["json", "rustls-tls"], optional = true }
+
+# Optional outbound context propagation for HTTP dispatchers
+rhelma-http-observability = { path = "../rhelma-http-observability", optional = true, features = ["reqwest"] }
+
+
+# -----------------------------------------
+# Dev Dependencies
+# -----------------------------------------
+[dev-dependencies]
+tempfile = "3"
+criterion = "0.5"
+
+[[bench]]
+name = "log_bench"
+harness = false
+
+
+[[example]]
+name = "rhelma-logger-basic"
+path = "examples/basic.rs"

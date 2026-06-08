@@ -1,0 +1,18 @@
+{
+  "nodes": [
+    {
+      "node_id": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+      "region": "eu-west-1",
+      "allowed_residencies": ["eu"],
+      "capabilities": ["inference", "rag"],
+      "endpoints": {
+        "control_url": "http://10.0.0.10:8080",
+        "data_url": "http://10.0.0.10:9090"
+      },
+      "last_seen_at": "2026-01-07T09:59:00Z",
+      "reputation": 0,
+      "attested": false,
+      "status": "active"
+    }
+  ]
+}

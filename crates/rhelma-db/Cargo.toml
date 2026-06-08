@@ -1,0 +1,44 @@
+[package]
+name = "rhelma-db"
+version = "0.3.0"
+edition = "2021"
+
+[dependencies]
+# workspace-shared
+sqlx = { workspace = true }
+tracing = { workspace = true }
+
+# basics
+thiserror = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+chrono = { workspace = true, features = ["serde", "clock"] }
+uuid = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+secrecy = { workspace = true }
+tokio = { workspace = true, features = ["time"] }
+
+# rhelma crates
+rhelma-core = { path = "../rhelma-core" }
+rhelma-config = { path = "../rhelma-config" }
+rhelma-metrics = { path = "../rhelma-metrics" }
+
+# optional (outbox / event integration later)
+rhelma-event = { path = "../rhelma-event", optional = true }
+
+
+[features]
+default = []
+events = ["rhelma-event"]
+
+# موقت برای سازگاری؛ هدف: انتقال این repoها به crate سرویس/دامنه
+domain-repos = []
+
+# اگر هنوز از DbConfigProvider و models/observability استفاده می‌کنی:
+observability-config = []
+
+
+[dev-dependencies]
+# Tests use #[tokio::test] to provide a runtime required by sqlx::Pool internals.
+tokio = { workspace = true, features = ["full"] }

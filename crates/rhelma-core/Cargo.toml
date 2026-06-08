@@ -1,0 +1,71 @@
+[package]
+name = "rhelma-core"
+version = "5.2.0-enterprise-pro"
+edition = "2021"
+
+[dependencies]
+# Inherit shared deps from workspace
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+http = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+tracing = { workspace = true }
+validator = { workspace = true }
+
+dashmap = "5.5"
+
+# Governance verification (bootstrap uses HMAC-SHA256; can be upgraded to Ed25519 later).
+base64 = { workspace = true }
+sha2 = { workspace = true }
+hmac = { workspace = true }
+subtle = { workspace = true }
+ed25519-dalek = "2"
+
+# Optional HTTP layer
+axum = { workspace = true, optional = true }
+tower = { workspace = true, optional = true }
+tower-http = { workspace = true, optional = true }
+
+# Optional Database layer
+sqlx = { workspace = true, optional = true }
+
+# Optional Health checking (multi-region)
+reqwest = { workspace = true, optional = true }
+tokio = { workspace = true, optional = true }
+
+[features]
+default = ["prelude"]
+
+
+# Only core functionality
+prelude = []
+
+# Enable HTTP conversion (IntoResponse)
+http = ["axum", "tower", "tower-http"]
+
+# Enable database conversion (From<sqlx::Error>)
+database = ["sqlx"]
+
+# Enable multi-region health checking helpers (tokio + reqwest)
+region-health = ["dep:reqwest", "dep:tokio"]
+
+# Full bundle
+full = ["http", "database", "region-health"]
+
+[dev-dependencies]
+criterion = "0.5"
+tokio = { workspace = true }
+tokio-test = "0.4"
+mockall = "0.13"
+insta = { version = "1", features = ["json"] }
+
+
+
+
+
+
+
+

@@ -1,0 +1,17 @@
+Rhelma-CORE CHANGELOG
+
+[1.1.1] - 2025-12-01
+--------------------
+### Fixed
+- Unified lib.rs to remove outdated anyhow usage.
+- Finalized realtime_types.rs with full feature set.
+- Removed unused timestamp logic; now fully UUIDv7.
+- Eliminated all warnings.
+
+
+
+
+
+
+
+

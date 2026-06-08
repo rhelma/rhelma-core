@@ -1,0 +1,10 @@
+{
+  "kind": "rotate_signers",
+  "payload": {
+    "new_signers": [
+      "deadbeef",
+      "cafebabe"
+    ],
+    "quorum": 2
+  }
+}

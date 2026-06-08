@@ -1,0 +1,61 @@
+[package]
+name = "rhelma-auth"
+version = "0.2.0-enterprise-pro"
+edition = "2021"
+license = "MIT"
+description = "Rhelma Auth (Enterprise): JWT(EdDSA) + Redis Sessions + RBAC + Tower Middleware + OIDC traits + Eventing"
+
+[dependencies]
+# Core
+thiserror = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+chrono = { workspace = true, features = ["serde"] }
+uuid = { workspace = true, features = ["serde", "v4", "v7"] }
+secrecy = { workspace = true, features = ["serde"] }
+
+# Crypto / tokens
+base64 = { workspace = true }
+sha2 = { workspace = true }
+rand_core = "0.6"
+jsonwebtoken = "9"
+
+# Async
+async-trait = { workspace = true }
+tokio = { workspace = true , features = ["macros", "rt-multi-thread", "time", "sync"] }
+tracing = { workspace = true }
+
+# Redis (distributed sessions + rate limit)
+redis = { workspace = true , features = ["tokio-comp", "connection-manager"] }
+
+# Tower middleware
+http = { workspace = true }
+tower = { workspace = true }
+futures-util = "0.3"
+
+# Password hashing (optional feature but enabled by default)
+argon2 = "0.5"
+password-hash = "0.5"
+
+# Rhelma
+rhelma-core = { path = "../rhelma-core" }
+rhelma-tracing = { path = "../rhelma-tracing" }
+rhelma-metrics = { path = "../rhelma-metrics" }
+rhelma-event = { path = "../rhelma-event", optional = true }
+
+# Optional DB integration (trait-based; sqlx optional)
+sqlx = { workspace = true, default-features = false, features = ["runtime-tokio", "postgres", "uuid", "chrono", "json"], optional = true }
+
+[features]
+default = ["eventing", "oidc", "db-link", "tower-middleware", "redis-sessions", "password"]
+redis-sessions = []
+tower-middleware = []
+password = []
+eventing = ["dep:rhelma-event"]
+oidc = []
+db-link = []
+sqlx = ["dep:sqlx"]
+
+
+
+
