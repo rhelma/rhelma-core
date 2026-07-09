@@ -1,81 +1,121 @@
 # Rhelma Core
 
-## AI-Native Workspace Foundation
+## Open Foundation for AI-Native Systems
 
-Rhelma Core is an open-source Rust foundation for building intelligent workspace systems.
+Rhelma Core is an open-source Rust foundation for building secure, intelligent, and event-driven applications.
 
-It provides reusable primitives for developers who want to build applications where users, services, and AI agents can work together securely.
+The project provides reusable infrastructure primitives that help developers create systems with authentication, capabilities, policies, events, and reliable AI integrations.
 
-## What is Rhelma Core?
+Rhelma Core is designed as a foundation layer, not as a hosted product.
 
-Rhelma Core focuses on foundational building blocks:
+---
 
-- Workspace-aware identity primitives
-- Authentication foundations
-- Event-driven communication
-- Capability-based service design
-- Policy and authorization primitives
-- Health and telemetry foundations
+## Why Rhelma Core Exists
 
-The core project is designed to help developers create AI-enabled systems without depending on a specific hosted platform.
+Modern applications are becoming distributed systems where software services, automation, and AI agents need to communicate safely.
 
-## Architecture
+Rhelma Core provides common building blocks for:
+
+- secure service communication
+- AI agent foundations
+- capability-driven actions
+- policy enforcement
+- event-based architectures
+- operational reliability primitives
+
+---
+
+## Core Architecture
 
 ```text
 Application
     |
-Workspace
-    |
-AI Agent
+Core Libraries
     |
 Capabilities
     |
-Services
+Policies
     |
 Events
+    |
+Services
 ```
 
-## Core Principles
+The goal is to provide stable foundations that developers can compose into their own applications.
 
-### Workspace First
+---
 
-Applications can organize users and services around secure workspace contexts.
+## Public Core Principles
 
-### Secure by Default
+### Security by Design
 
-Rhelma Core provides foundations for:
+Rhelma Core focuses on reusable security foundations:
 
-- authentication
-- authorization
-- service boundaries
+- authentication primitives
+- authorization models
+- explicit service boundaries
 - auditable actions
 
-### Event Driven
+### Capability-Based Systems
 
-Shared event contracts allow services to communicate through explicit interfaces.
+Services can describe supported actions through explicit capability definitions.
 
-## Included in Rhelma Core
+This enables safer automation and AI-assisted workflows.
+
+### Event-Driven Architecture
+
+Shared event contracts allow independent components to communicate through clear interfaces.
+
+---
+
+## AI Agent Foundations
+
+Rhelma Core provides primitives for building AI-enabled applications.
+
+The public core focuses on:
+
+- agent interfaces
+- action contracts
+- capability discovery
+- policy-controlled execution models
+
+Commercial AI products and managed agent experiences are built separately on top of these foundations.
+
+---
+
+## What Is Included
 
 This repository contains public developer foundations:
 
 - Rust libraries
-- contracts
-- security primitives
-- event abstractions
+- authentication components
+- event contracts
 - capability models
+- policy primitives
+- health and telemetry foundations
 - documentation
 - examples
 
-## Not Included
+---
 
-Commercial platform features remain outside the public core:
+## What Is Not Included
+
+Rhelma follows an open-core model.
+
+The following remain outside the public core:
 
 - hosted platform services
+- commercial applications
 - enterprise administration
+- managed deployments
 - billing systems
 - customer integrations
-- managed operations
 - proprietary automation workflows
+- production operations tooling
+
+Products built on top of Rhelma Core may provide additional capabilities.
+
+---
 
 ## Getting Started
 
@@ -95,16 +135,27 @@ Test:
 cargo test --workspace
 ```
 
+Explore:
+
+- `crates/rhelma-core`
+- `crates/rhelma-auth`
+- `crates/rhelma-event`
+- `crates/rhelma-capabilities`
+
+---
+
 ## Contributing
 
 Contributions are welcome.
 
-Before contributing, read:
+Please read:
 
 - CONTRIBUTING.md
 - SECURITY.md
 - OPEN_CORE_SCOPE.md
 
+---
+
 ## License
 
-See LICENSE for usage terms.
+See LICENSE for details.
