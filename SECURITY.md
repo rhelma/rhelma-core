@@ -1,14 +1,31 @@
 # Security Policy
 
-## Supported versions
-We support security fixes on the latest released versions of each service/crate in this repository.
+Rhelma Core takes security seriously.
 
-## Reporting a vulnerability
-Please **do not** open public issues for security reports.
+## Security Model
 
-Send a private report with:
-- A clear description of the issue and impact
-- Steps to reproduce (PoC if possible)
-- Affected components / versions
+The project follows:
 
-We will acknowledge receipt and coordinate a fix and disclosure timeline.
+- workspace isolation
+- secure service boundaries
+- capability-based authorization
+- policy enforcement
+- auditability
+- secure event communication
+
+## Reporting Vulnerabilities
+
+Please do not open public issues for security problems.
+
+Report privately with:
+
+- Description of the issue
+- Impact assessment
+- Reproduction steps
+- Affected components
+
+We will coordinate investigation and remediation.
+
+## Supported Versions
+
+Security fixes are prioritized for actively maintained releases.
