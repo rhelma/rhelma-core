@@ -19,6 +19,8 @@ pub mod db_link;
 pub mod error;
 /// mod (documented for contract compliance).
 pub mod eventing;
+/// Internal service-to-service authentication (HMAC-signed headers).
+pub mod internal_service;
 /// mod (documented for contract compliance).
 pub mod jwt;
 /// mod (documented for contract compliance).
@@ -48,6 +50,11 @@ use std::sync::Arc;
 pub use config::AuthConfig;
 /// use (documented for contract compliance).
 pub use error::{AuthError, AuthResult};
+/// use (documented for contract compliance).
+pub use internal_service::{
+    InternalAuthError, InternalRequestSigner, InternalRequestVerifier, ServiceIdentity,
+    SignedHeaders, VerifiedCaller,
+};
 /// use (documented for contract compliance).
 pub use jwt::{JwtService, JwtTokenPair};
 /// use (documented for contract compliance).

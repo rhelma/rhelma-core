@@ -38,6 +38,27 @@ This crate reads the following environment variables (directly or via configs):
 | `RHELMA_AUTH_RATE_LIMIT_REQUESTS` | Baseline requests per window (default: 60) |
 | `RHELMA_AUTH_RATE_LIMIT_WINDOW_SECS` | Rate limit window seconds (default: 60) |
 
+## Internal service-to-service auth (`internal_service`)
+
+`rhelma_auth::internal_service` authenticates **service→service** calls to
+internal endpoints (e.g. `/internal/capabilities`,
+`/internal/agent/actions/dry-run`). It signs an HMAC-SHA256 envelope over
+`service | request_id | timestamp | METHOD | path` and carries it in four headers:
+`X-Rhelma-Service`, `X-Rhelma-Request-Id`, `X-Rhelma-Timestamp`,
+`X-Rhelma-Signature`. User JWTs are **not** used for service calls.
+
+- Callers build a `InternalRequestSigner` (`env::signer_from_env(<my-service>)`)
+  and attach `signer.sign(..).as_pairs()`.
+- Servers build a `InternalRequestVerifier` (`env::verifier_from_env(is_prod)`)
+  and guard internal routes; the verifier **fails closed** when unconfigured.
+
+| Variable | Purpose |
+|---|---|
+| `RHELMA_INTERNAL_AUTH_SECRET` | Shared HMAC secret; default caller is `agent-service` |
+| `RHELMA_INTERNAL_AUTH_SECRETS` | `name=secret` pairs to authorize extra callers |
+| `RHELMA_INTERNAL_AUTH_MAX_SKEW_SECONDS` | Timestamp/replay window (default 300) |
+| `RHELMA_INTERNAL_AUTH_DEV_INSECURE` | Non-prod only: allow unauthenticated internal calls |
+
 ## Security & Compliance
 
 Normative requirements are in `docs/contract/v6.0/00_INDEX_v6.0.md`.

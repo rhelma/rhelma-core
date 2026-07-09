@@ -22,7 +22,13 @@ pub mod kafka_propagation;
 pub use config::{TracingConfig, TracingConfigError};
 
 use tracing_subscriber::layer::SubscriberExt;
-use tracing_subscriber::{EnvFilter, Registry};
+use tracing_subscriber::{EnvFilter, Layer, Registry};
+
+/// Env var selecting the log output format for the fmt layer.
+/// `json` (default) — structured JSON lines, parseable by promtail/Loki.
+/// `text`/`plain`   — compact human-readable single line (legacy).
+/// `pretty`         — multi-line developer-friendly output.
+pub const LOG_FORMAT_ENV: &str = "RHELMA_LOG_FORMAT";
 
 /// Main tracing handle for Rhelma services.
 #[derive(Clone)]
@@ -69,14 +75,12 @@ impl RhelmaTracing {
             TracingConfigError::InvalidConfig(format!("invalid tracing filter: {e}"))
         })?;
 
-        // ---- Pretty/Console Layer ----
-        let fmt_layer = tracing_subscriber::fmt::layer()
-            .with_target(false)
-            .with_thread_ids(false)
-            .with_thread_names(false);
+        // ---- Format Layer (JSON by default; env-overridable) ----
+        let fmt_layer = fmt_layer_from_env();
 
         // ---- Base registry ----
-        let base = Registry::default().with(filter).with(fmt_layer);
+        // fmt layer first (it is typed `Layer<Registry>`), filter on top.
+        let base = Registry::default().with(fmt_layer).with(filter);
 
         // ---- Optional OTEL ----
         let subscriber: Box<dyn tracing::Subscriber + Send + Sync> = {
@@ -128,6 +132,58 @@ impl RhelmaTracing {
     pub fn should_sample(&self) -> bool {
         should_sample(self.config.sampling_rate)
     }
+}
+
+/// Build the fmt (formatting) layer, selecting the output format from the
+/// `RHELMA_LOG_FORMAT` env var. JSON by default so logs are parseable by
+/// promtail/Loki (Step 2 centralized logging); `text`/`plain` and `pretty`
+/// remain available for local development.
+///
+/// The JSON layer flattens event fields and includes the current span's fields
+/// (e.g. `trace_id`/`correlation_id` injected by rhelma-http-observability) so
+/// each line is self-describing.
+pub fn fmt_layer_from_env() -> Box<dyn Layer<Registry> + Send + Sync> {
+    let format = std::env::var(LOG_FORMAT_ENV)
+        .unwrap_or_else(|_| "json".to_string())
+        .to_lowercase();
+    match format.as_str() {
+        "text" | "plain" => Box::new(
+            tracing_subscriber::fmt::layer()
+                .with_target(false)
+                .with_thread_ids(false)
+                .with_thread_names(false),
+        ),
+        "pretty" => Box::new(tracing_subscriber::fmt::layer().pretty()),
+        _ => Box::new(
+            tracing_subscriber::fmt::layer()
+                .json()
+                .flatten_event(true)
+                .with_current_span(true)
+                .with_span_list(false)
+                .with_target(true),
+        ),
+    }
+}
+
+/// Dependency-light global logging bootstrap for services that do NOT wire the
+/// full observability-core stack.
+///
+/// Installs a process-global subscriber whose format follows `RHELMA_LOG_FORMAT`
+/// (JSON by default) and whose level filter follows `RUST_LOG`, falling back to
+/// `default_filter` (e.g. `"info"`). Idempotent and fail-open: if a global
+/// subscriber is already installed this is a no-op, and it never panics — a
+/// service must never fail to start because logging setup raced.
+///
+/// This is the single structured-logging entry point for the ad-hoc services
+/// that previously hand-rolled a plain-text `tracing_subscriber::fmt()` init.
+pub fn init_fmt_logging(default_filter: &str) {
+    let filter = EnvFilter::try_from_default_env()
+        .or_else(|_| EnvFilter::try_new(default_filter))
+        .unwrap_or_else(|_| EnvFilter::new("info"));
+    let subscriber = Registry::default().with(fmt_layer_from_env()).with(filter);
+    // Ignore the error: a global subscriber may already be installed (e.g. tests
+    // or a double-init). Logging is best-effort and must not abort startup.
+    let _ = tracing::subscriber::set_global_default(subscriber);
 }
 
 /// Head-based sampling helper used by tests and services.

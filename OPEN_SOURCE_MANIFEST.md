@@ -35,16 +35,16 @@ These services can be included if they run with public configuration and synthet
 - `apps/social-service`
 - `apps/search-service`
 - `apps/realtime-service`
-- `apps/file-storage`
+- `apps/file-storage-service`
 - `apps/node-registry`
 - `apps/rhelma-attestation-verifier`
 - `apps/sandbox-runner`
 
 ## Public SDKs
 
-- `rhelma-sdk-js`
-- `rhelma-sdk-python`
-- `rhelma-sdk-go`
+- `packages/sdk-js`
+- `packages/sdk-python`
+- `packages/sdk-go`
 
 ## Public Documentation
 

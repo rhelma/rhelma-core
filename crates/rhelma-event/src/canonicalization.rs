@@ -105,6 +105,15 @@ pub fn canonical_audit_payload_hash_hex(payload: &Value) -> String {
     hex::encode(digest)
 }
 
+/// Lowercase hex encoding of the canonical payload SHA-256 digest.
+///
+/// This is the generic alias for platform events. It intentionally reuses the
+/// existing canonical audit hashing rules so event and audit hashes stay aligned
+/// across crates.
+pub fn canonical_payload_hash_hex(payload: &Value) -> String {
+    canonical_audit_payload_hash_hex(payload)
+}
+
 /// Backward-compatible alias used by older modules/tests.
 pub fn audit_payload_digest(payload: &Value) -> [u8; 32] {
     sha256_canonical_audit_payload(payload)

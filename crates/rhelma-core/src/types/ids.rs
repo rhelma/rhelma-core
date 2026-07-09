@@ -3,7 +3,7 @@ use std::fmt;
 use uuid::Uuid;
 
 use crate::error::RhelmaError;
-use validator::validate_email;
+use validator::ValidateEmail;
 
 // ==============================================================
 // Shared validator for all strong text-based IDs (Tenant/Region)
@@ -78,6 +78,44 @@ impl Default for UserId {
 }
 
 impl fmt::Display for UserId {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+// ==============================================================
+// WorkspaceId (UUID-based strong ID)
+// ==============================================================
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Hash)]
+#[serde(transparent)]
+pub struct WorkspaceId(pub Uuid);
+
+impl WorkspaceId {
+    /// Create a random WorkspaceId (internal use only).
+    pub fn new() -> Self {
+        Self(Uuid::new_v4())
+    }
+
+    /// Parse a WorkspaceId from a string (external input).
+    pub fn parse(s: &str) -> Result<Self, RhelmaError> {
+        let uuid = Uuid::parse_str(s)
+            .map_err(|_| RhelmaError::Validation("invalid workspace_id format".into()))?;
+        Ok(Self(uuid))
+    }
+
+    pub fn as_uuid(&self) -> Uuid {
+        self.0
+    }
+}
+
+impl Default for WorkspaceId {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl fmt::Display for WorkspaceId {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.0)
     }
@@ -181,5 +219,6 @@ fn is_valid_email(s: &str) -> bool {
         return false;
     }
 
-    validate_email(trimmed)
+    // validator 0.18 replaced the free `validate_email` fn with the `ValidateEmail` trait.
+    trimmed.validate_email()
 }

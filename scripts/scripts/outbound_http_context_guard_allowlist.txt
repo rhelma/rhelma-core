@@ -1,3 +1,0 @@
-# Regex patterns of file paths to ignore for outbound HTTP context guard.
-# Example:
-# ^.*/crates/some-crate/src/tests/.*\.rs$

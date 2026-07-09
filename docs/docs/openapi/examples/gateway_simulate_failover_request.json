@@ -1,6 +1,0 @@
-{
-  "upstream_service": "search-service",
-  "from_region": "eu-west-1",
-  "to_region": "us-east-1",
-  "reason": "admin_simulation"
-}

@@ -1,9 +1,0 @@
-[package]
-name = "rhelma-realm-telemetry"
-version = "0.1.1"
-edition = "2021"
-description = "Realm-specific telemetry helpers for Rhelma (messages, moderation, AI events)"
-publish = false
-
-[dependencies]
-metrics = { workspace = true }

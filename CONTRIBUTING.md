@@ -1,52 +1,40 @@
-# Contributing to Rhelma Core
+# Contributing
 
-Thank you for contributing to Rhelma Core.
+This repository uses **strict linting** and a **contract-first** approach.
 
-Rhelma is an open-source Rust platform focused on AI-native workspaces, agents, services, and event-driven infrastructure.
+## Quick checks
 
-## Development
-
-Requirements:
-
-- Rust toolchain
-- Docker (for integration services)
-- Node.js (for frontend tooling where applicable)
-
-Run:
+Run these before opening a PR:
 
 ```bash
 cargo fmt --all
+cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace
+RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps
 ```
 
-## Architecture Principles
+## Supply chain checks (recommended)
 
-Contributions should respect:
+These are also enforced in CI.
 
-- Workspace-first identity
-- User != Workspace != Tenant
-- Explicit service contracts
-- Capability-based actions
-- Policy and entitlement checks
-- Secure defaults
+```bash
+cargo install cargo-audit
+cargo audit
 
-## Code Guidelines
+cargo install cargo-deny
+cargo deny check
+```
 
-- Prefer safe Rust (`forbid(unsafe_code)` where applicable).
-- Add tests for new behavior.
-- Avoid duplicate infrastructure.
-- Keep APIs documented.
-- Never commit secrets, tokens, or private configuration.
+## Coding rules
 
-## Pull Requests
+- `#![forbid(unsafe_code)]` in crates unless there is a strong, reviewed reason.
+- No wildcard topics or regex subscriptions in Kafka configs (use explicit allow-lists).
+- Prefer strong types from `rhelma-core` for tenant/region/request IDs.
+- Keep errors sanitized: never leak secrets, tokens, or internal stack traces.
+- Public APIs must have Rustdoc, including `# Errors` for fallible functions.
 
-Include:
+## Tests
 
-- Problem description
-- Design decision
-- Tests performed
-- Documentation updates
-
-## Security
-
-Do not report vulnerabilities publicly. See SECURITY.md.
+- Unit tests for pure logic.
+- Contract tests (headers/events) for boundaries between services/crates.
+- Integration tests must be feature-gated if they require external services (Kafka/Redis/etc.).

@@ -1,0 +1,27 @@
+[package]
+name = "rhelma-health"
+version = "0.1.0-enterprise-pro"
+edition = "2021"
+publish = false
+description = "Shared service health & dependency-aware readiness contract (/healthz, /livez, /readyz) for Rhelma services"
+
+[features]
+# Outbound HTTP probe helper for downstream-service readiness. On by default
+# because most readiness checks need to probe at least one downstream.
+default = ["http"]
+http = ["dep:reqwest", "dep:rhelma-http-observability"]
+
+[dependencies]
+axum = { workspace = true }
+tokio = { workspace = true }
+futures = { workspace = true }
+chrono = { workspace = true }
+serde = { workspace = true }
+metrics = { workspace = true }
+tracing = { workspace = true }
+
+reqwest = { workspace = true, optional = true }
+rhelma-http-observability = { workspace = true, optional = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }

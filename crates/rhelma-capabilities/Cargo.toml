@@ -1,0 +1,13 @@
+[package]
+name = "rhelma-capabilities"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Service capability manifests and agent action registry for Rhelma"
+publish = false
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true }

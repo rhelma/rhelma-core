@@ -33,7 +33,7 @@ pub use crate::tenancy::{ResidencyPolicy, TenancyTier, TenantProfile};
 //
 // ----- Strong Identity + Value Types -----------------------------------------
 //
-pub use crate::types::{Email, RateLimitKeyBuilder, RegionId, TenantId, UserId};
+pub use crate::types::{Email, RateLimitKeyBuilder, RegionId, TenantId, UserId, WorkspaceId};
 
 //
 // ----- Observability Config (Public + Stable) --------------------------------

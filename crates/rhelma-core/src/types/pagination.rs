@@ -91,11 +91,7 @@ impl<T> Paginated<T> {
 
     /// Current page index (zero-based).
     pub fn current_page(&self) -> u64 {
-        if self.limit == 0 {
-            0
-        } else {
-            self.offset / self.limit
-        }
+        self.offset.checked_div(self.limit).unwrap_or(0)
     }
 
     /// Whether more pages exist.

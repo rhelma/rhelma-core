@@ -1,0 +1,13 @@
+[package]
+name = "rhelma-policy"
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Deterministic workspace policy decisions for the Rhelma platform"
+publish = false
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+
+rhelma-db = { workspace = true }

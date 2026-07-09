@@ -230,3 +230,53 @@ impl Default for PasswordPolicy {
         }
     }
 }
+
+// ============================================================
+// Constant-time comparison (QUAL-02: single canonical impl)
+// ============================================================
+
+/// Constant-time byte-slice equality, resistant to timing side-channels when
+/// comparing secrets (API keys, HMAC signatures, admin/webhook tokens).
+///
+/// Backed by the vetted `subtle` crate. Slice *length* is not treated as
+/// secret: differing lengths return `false` (subtle short-circuits on length).
+///
+/// This is the single source of truth — services must call this instead of
+/// hand-rolling their own comparison (previously duplicated in 11 binaries).
+pub fn constant_time_eq(a: &[u8], b: &[u8]) -> bool {
+    use subtle::ConstantTimeEq;
+    a.ct_eq(b).into()
+}
+
+/// Constant-time string equality; convenience wrapper over [`constant_time_eq`].
+pub fn constant_time_eq_str(a: &str, b: &str) -> bool {
+    constant_time_eq(a.as_bytes(), b.as_bytes())
+}
+
+#[cfg(test)]
+mod ct_eq_tests {
+    use super::{constant_time_eq, constant_time_eq_str};
+
+    #[test]
+    fn equal_inputs_match() {
+        assert!(constant_time_eq(b"s3cr3t-token", b"s3cr3t-token"));
+        assert!(constant_time_eq_str("abc123", "abc123"));
+    }
+
+    #[test]
+    fn different_inputs_do_not_match() {
+        assert!(!constant_time_eq(b"s3cr3t-token", b"s3cr3t-tok3n"));
+        assert!(!constant_time_eq_str("abc123", "abc124"));
+    }
+
+    #[test]
+    fn different_lengths_do_not_match() {
+        assert!(!constant_time_eq(b"short", b"longer-value"));
+        assert!(!constant_time_eq_str("a", "ab"));
+    }
+
+    #[test]
+    fn empty_inputs_match() {
+        assert!(constant_time_eq(b"", b""));
+    }
+}

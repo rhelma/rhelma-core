@@ -1,45 +1,82 @@
 [workspace]
 members = [
-    # Public Foundation Crates
+    "crates/e2e-tests",
+    "crates/frontpage",
     "crates/rhelma-ai-attestation",
     "crates/rhelma-ai-contracts",
     "crates/rhelma-attestation",
     "crates/rhelma-auth",
     "crates/rhelma-cache",
+    "crates/rhelma-capabilities",
     "crates/rhelma-config",
     "crates/rhelma-core",
     "crates/rhelma-db",
+    "crates/rhelma-entitlements",
     "crates/rhelma-event",
     "crates/rhelma-event-kafka",
+    "crates/rhelma-event-kafka-agent",
+    "crates/rhelma-health",
     "crates/rhelma-http-observability",
     "crates/rhelma-logger",
     "crates/rhelma-metrics",
+    "crates/rhelma-policy",
     "crates/rhelma-realm-telemetry",
     "crates/rhelma-sandbox-runner",
     "crates/rhelma-tracing",
-    # Public Reference Services
+    "apps/agent-service",
+    "apps/wallet-service",
+    "apps/agent-handoff",
+    "apps/ai-companion",
+    "apps/ai-orchestrator",
     "apps/api-gateway",
-    "apps/file-storage",
-    "apps/node-registry",
-    "apps/realtime-service",
+    "apps/bridge-adapter",
+    "apps/control-service",
+    "apps/digital-family-vault",
+    "apps/edge-worker",
+    "apps/file-storage-service",
+    "apps/gossip-discovery",
+    "apps/guardian-agent",
+    "apps/license-service",
     "apps/rhelma-attestation-verifier",
+    "apps/rhelma-bridge-drivers",
+    "apps/rhelma-governance-signer",
+    "apps/rhelma-node",
+    "apps/mni-rag",
+    "apps/multi-frontend",
+    "apps/node-registry",
+    "apps/patch-applier",
+    "apps/profile-service",
+    "apps/realm-hub",
+    "apps/realtime-service",
+    "apps/region-health-aggregator",
     "apps/sandbox-runner",
     "apps/search-service",
+    "apps/security-governance",
     "apps/social-service",
-    # Observability
+    "apps/value-ledger",
+    "apps/value-ledger-federation",
     "observability/agent",
     "observability/core",
+    "extras/llm-node",
 ]
 
 default-members = [
     "apps/api-gateway",
+    "apps/control-service",
     "apps/social-service",
     "apps/search-service",
     "apps/realtime-service",
-    "apps/file-storage",
+    "apps/file-storage-service",
+    "apps/agent-service",
+    "apps/wallet-service",
+    "apps/profile-service",
     "apps/node-registry",
+    "apps/security-governance",
+    "apps/rhelma-governance-signer",
+    "apps/rhelma-node",
     "apps/rhelma-attestation-verifier",
     "crates/rhelma-attestation",
+    "extras/llm-node",
 ]
 
 resolver = "2"
@@ -57,10 +94,13 @@ rhelma-config = { path = "crates/rhelma-config" }
 rhelma-core = { path = "crates/rhelma-core" }
 rhelma-auth = { path = "crates/rhelma-auth" }
 rhelma-db = { path = "crates/rhelma-db" }
+rhelma-entitlements = { path = "crates/rhelma-entitlements" }
+rhelma-capabilities = { path = "crates/rhelma-capabilities" }
 rhelma-cache = { path = "crates/rhelma-cache" }
 rhelma-tracing = { path = "crates/rhelma-tracing" }
 rhelma-logger = { path = "crates/rhelma-logger" }
 rhelma-metrics = { path = "crates/rhelma-metrics" }
+rhelma-policy = { path = "crates/rhelma-policy" }
 rhelma-event = { path = "crates/rhelma-event" }
 rhelma-event-kafka = { path = "crates/rhelma-event-kafka" }
 rhelma-event-kafka-agent = { path = "crates/rhelma-event-kafka-agent" }
@@ -69,24 +109,30 @@ rhelma-ai-attestation = { path = "crates/rhelma-ai-attestation" }
 rhelma-attestation = { path = "crates/rhelma-attestation" }
 rhelma-sandbox-runner = { path = "crates/rhelma-sandbox-runner" }
 rhelma-http-observability = { path = "crates/rhelma-http-observability" }
+rhelma-health = { path = "crates/rhelma-health" }
 rhelma-realm-telemetry = { path = "crates/rhelma-realm-telemetry" }
 
 # Web Framework
 axum = { version = "0.8.0", features = ["ws", "macros"] }
 axum-prometheus = "0.10"
-metrics-exporter-prometheus = "0.18"
-tower = { version = "0.4", features = ["util"] }
-tower-http = { version = "0.5", features = ["util", "trace", "compression-br"] }
+# default-features off: services only need the recorder + render() path, not the
+# http-listener/push-gateway features. Pinning fleet-wide on 0.18 (metrics 0.24)
+# so every service installs a recorder compatible with the `metrics` 0.24 facade
+# that rhelma-health/rhelma-metrics emit through (the old per-app 0.15.3 pin used
+# an incompatible metrics 0.23 recorder, so those gauges/counters were dropped).
+metrics-exporter-prometheus = { version = "0.18", default-features = false }
+tower = { version = "0.4", features = ["util", "limit"] }
+tower-http = { version = "0.5", features = ["util", "trace", "compression-br", "compression-gzip"] }
 hyper = "1.2.0"
 # Observability / OTLP compatibility
-opentelemetry = { version = "0.21" }
-opentelemetry_sdk = { version = "0.21", features = ["rt-tokio"] }
-opentelemetry-otlp = "0.14"
+opentelemetry = { version = "0.22" }
+opentelemetry_sdk = { version = "0.22", features = ["rt-tokio"] }
+opentelemetry-otlp = { version = "0.15" }
 # NOTE: opentelemetry-otlp (and its older tonic/axum stack) is intentionally
 # not part of the workspace default dependency set. If you need OTLP export,
 # enable the `otel` feature on `rhelma-tracing` and add an OTLP exporter crate
 # explicitly in the consuming binary.
-tracing-opentelemetry = { version = "0.22" }
+tracing-opentelemetry = { version = "0.23" }
 metrics = { version = "0.24" }
 # URLs (used in rhelma-tracing v2 config)
 url = "2.5"
@@ -113,6 +159,9 @@ ipnet = "2.11"
 
 # Database & Cache
 sqlx = { version = "0.8", default-features = false, features = ["postgres", "runtime-tokio-rustls", "uuid", "chrono", "macros", "migrate"] }
+# WARNING: redis 1.0.1 does not exist on crates.io (latest stable is 0.27.x).
+# If this resolves, verify it's the correct crate. If build fails, change to:
+# redis = { version = "0.27", features = ["tokio-comp", "connection-manager"] }
 redis = { version = "1.0.1", features = ["tokio-comp", "connection-manager"] }
 async-nats = "0.35"
 
@@ -134,11 +183,27 @@ tracing-subscriber = { version = "0.3", features = ["env-filter", "json", "regis
 chrono = { version = "0.4", features = ["serde", "clock"] }
 uuid = { version = "1.0", features = ["serde", "v4", "v7"] }
 
-# Validation
-validator = { version = "0.16", features = ["derive"] }
+# Validation — 0.20 drops the vulnerable transitive idna 0.5 (RUSTSEC-2024-0421);
+# 0.20 depends on idna >=1.0.
+validator = { version = "0.20", features = ["derive"] }
 
 
 [workspace.package]
 version = "0.1.1"
 edition = "2021"
 license = "MIT OR Apache-2.0"
+repository = "https://github.com/rhelma/rhelma-enterprise"
+homepage = "https://rhelma.app"
+description = "Rhelma Enterprise Platform"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
+panic = "abort"
+
+[profile.release-debug]
+inherits = "release"
+strip = "none"
+debug = 1

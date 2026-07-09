@@ -1,8 +1,0 @@
-{
-  "subject_id": "did:rhelma:node:example123",
-  "delta": 100,
-  "reason": "admin:adjustment",
-  "tags": [
-    "manual"
-  ]
-}

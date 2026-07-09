@@ -27,9 +27,11 @@ hex = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
 serde_json = { workspace = true, features = ["preserve_order"] }
 sha2 = { workspace = true }
+sqlx = { workspace = true }
 thiserror = { workspace = true }
 tracing = { workspace = true }
 uuid = { workspace = true, features = ["v7"] }
 
 [dev-dependencies]
 insta = { version = "1", features = ["json"] }
+tokio = { workspace = true, features = ["macros", "rt"] }

@@ -1,0 +1,27 @@
+# Services under apps/* that expose an HTTP surface (Axum or equivalent) and therefore
+# should have an OpenAPI scaffold at: docs/openapi/<service>.yaml
+#
+# One service per line. Comments and blank lines are ignored.
+
+agent-handoff
+control-service
+ai-companion
+ai-orchestrator
+api-gateway
+bridge-adapter
+digital-family-vault
+file-storage
+gossip-discovery
+guardian-agent
+license-service
+mni-rag
+multi-frontend
+node-registry
+realm-hub
+realtime-service
+region-health-aggregator
+search-service
+security-governance
+value-ledger
+value-ledger-federation
+social-service

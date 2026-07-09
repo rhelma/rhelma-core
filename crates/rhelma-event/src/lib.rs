@@ -22,6 +22,11 @@ pub mod audit_crypto;
 pub mod audit_verify;
 /// Canonicalization utilities
 pub mod canonicalization;
+/// Platform-level event envelope and append-only stores.
+pub mod platform;
+
+/// Observer Evidence contracts (Signal / Incident / EvidenceBundle) — Stage 11B.
+pub mod evidence;
 
 pub use audit_crypto::{
     build_audit_failure, verify_audit_envelope, AuditKeyRing, AuditSigError, AuditSigner,

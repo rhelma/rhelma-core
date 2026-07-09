@@ -1,2 +1,0 @@
-apps/edge-worker/src/config.rs
-crates/rhelma-config/src/central_env.rs

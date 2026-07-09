@@ -268,7 +268,9 @@ pub mod obs {
         pub region: String,
         /// Incident severity: "minor" | "moderate" | "critical".
         pub severity: String,
-        /// Incident description.
+        /// Incident description. Accepts `message` (the observability-agent /
+        /// docs-canonical field name) as an alias.
+        #[serde(alias = "message")]
         pub description: String,
         /// When incident was detected.
         pub detected_at: DateTime<Utc>,
@@ -276,8 +278,13 @@ pub mod obs {
 
     impl IncidentProposedEvent {
         /// Topic name for incident proposed events.
-        pub const TOPIC: &'static str = "obs.incident.proposed";
-        const SCHEMA: &'static str = "obs.incident.proposed@v1";
+        ///
+        /// Canonical topic is `ai.incident.proposed` — the observability-agent
+        /// is the producer (see `AiIncidentProposed`) and the ai-orchestrator
+        /// the consumer. Keep this in sync with the agent's emitter and the
+        /// orchestrator's subscription list.
+        pub const TOPIC: &'static str = "ai.incident.proposed";
+        const SCHEMA: &'static str = "ai.incident.proposed@v1";
 
         /// Convert IncidentProposedEvent to EventEnvelope.
         pub fn into_envelope(self) -> Result<EventEnvelope, EventBusError> {

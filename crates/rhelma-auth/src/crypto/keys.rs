@@ -22,9 +22,19 @@ pub fn load_ed25519_keys(
             code: "invalid_jwt_public_key_b64",
         })?;
 
+    // jsonwebtoken ≥9.3: DecodingKey::from_ed_der expects the raw 32-byte
+    // Ed25519 public key, NOT a SubjectPublicKeyInfo (SPKI) DER wrapper.
+    // The standard Ed25519 SPKI has a fixed 12-byte header; strip it.
+    // EncodingKey::from_ed_der handles PKCS#8 (48 bytes) correctly as-is.
+    let raw_pub = if pub_bytes.len() > 32 {
+        &pub_bytes[pub_bytes.len() - 32..]
+    } else {
+        &pub_bytes
+    };
+
     Ok((
         EncodingKey::from_ed_der(&priv_bytes),
-        DecodingKey::from_ed_der(&pub_bytes),
+        DecodingKey::from_ed_der(raw_pub),
     ))
 }
 
@@ -38,5 +48,10 @@ pub fn load_ed25519_public_key(public_b64: &str) -> AuthResult<DecodingKey> {
             code: "invalid_jwt_public_key_b64",
         })?;
 
-    Ok(DecodingKey::from_ed_der(&pub_bytes))
+    let raw_pub = if pub_bytes.len() > 32 {
+        &pub_bytes[pub_bytes.len() - 32..]
+    } else {
+        &pub_bytes
+    };
+    Ok(DecodingKey::from_ed_der(raw_pub))
 }

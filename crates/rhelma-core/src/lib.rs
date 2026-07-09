@@ -11,6 +11,7 @@ pub mod config;
 pub mod constants;
 pub mod environment;
 pub mod error;
+pub mod error_envelope;
 pub mod error_v52;
 pub mod http_error;
 
@@ -36,7 +37,8 @@ pub use crate::config::AppConfig;
 pub use crate::environment::Environment;
 pub use crate::error::{ErrorExt, RhelmaError};
 pub use crate::error_v52::{
-    envelope_from_rhelma_error, envelope_from_status, ErrorEnvelopeV52, ErrorSeverity, ErrorV52,
+    envelope_from_rhelma_error, envelope_from_status, service_error_envelope, ErrorEnvelopeV52,
+    ErrorSeverity, ErrorV52, ServiceErrorSeverity,
 };
 pub use crate::http_error::{HttpErrorBody, HttpErrorMapping};
 pub use crate::observability::UnifiedObservabilityConfig;

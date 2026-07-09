@@ -1,6 +1,0 @@
-{
-  "subject_id": "did:rhelma:node:example123",
-  "amount": 50,
-  "reason": "usage:ai_inference",
-  "reference": "job#987"
-}
